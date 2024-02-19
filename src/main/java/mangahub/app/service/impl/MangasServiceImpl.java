@@ -1,15 +1,19 @@
 package mangahub.app.service.impl;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import jakarta.validation.Valid;
+import mangahub.app.entities.EstadoReserva;
 import mangahub.app.entities.Manga;
 import mangahub.app.entities.Reserva;
 import mangahub.app.entities.Usuario;
 import mangahub.app.error.exception.MangaNotFoundException;
+import mangahub.app.error.exception.ReservaNotFoundException;
 import mangahub.app.repository.MangaRepository;
 import mangahub.app.repository.ReservaRepository;
 import mangahub.app.service.MangasService;
@@ -60,13 +64,24 @@ public class MangasServiceImpl implements MangasService {
 
 	@Override
 	public Reserva reservarManga(Manga manga, Usuario usuario) {
-
-		return null;
+	    Reserva reserva = new Reserva();
+	    reserva.setManga(manga);
+	    reserva.setUsuario(usuario);
+	    reserva.setEstadoReserva(EstadoReserva.PENDIENTE); // O cualquier otro estado que desees
+	    
+	    return reservaRepository.save(reserva);
 	}
 
 	@Override
 	public void devolverManga(Long reservaId) {
-
+	    Optional<Reserva> reservaOptional = reservaRepository.findById(reservaId);
+	    if (reservaOptional.isPresent()) {
+	        Reserva reserva = reservaOptional.get();
+	        reserva.setEstadoReserva(EstadoReserva.COMPLETADA); 
+	        reservaRepository.save(reserva);
+	    } else {
+	        throw new ReservaNotFoundException("Reserva no encontrada con ID: " + reservaId);
+	    }
 	}
 
 }

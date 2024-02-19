@@ -29,6 +29,7 @@ import mangahub.app.dto.response.error.ErrorDetailsResponse;
 import mangahub.app.entities.Manga;
 import mangahub.app.entities.Reserva;
 import mangahub.app.entities.Usuario;
+import mangahub.app.error.exception.ExcepcionCampoVacio;
 import mangahub.app.service.MangasService;
 import mangahub.app.service.user.ReservaService;
 
@@ -60,7 +61,7 @@ public class MangaController {
 	// Leer un manga por ID
 	@GetMapping("/{id}")
 	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
-	public Manga getBookById(@PathVariable Long id) {
+	public Manga getMangaById(@PathVariable Long id) {
 		return mangasService.obtenerMangaPorId(id);
 	}
 
@@ -68,21 +69,32 @@ public class MangaController {
 	// Crear un nuevo manga
 	@PostMapping
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public Manga createBook(@RequestBody Manga book) {
-		return mangasService.agregarManga(book);
+	public Manga createManga(@RequestBody Manga manga) {
+		if (manga.getTitulo() == null || manga.getTitulo().isEmpty()) {
+			throw new ExcepcionCampoVacio("titulo", "El título no puede estar vacío");
+		}
+
+		if (manga.getAutor() == null || manga.getAutor().isEmpty()) {
+			throw new ExcepcionCampoVacio("autor", "El autor no puede estar vacío");
+		}
+
+		if (manga.getIsbn() == null || manga.getIsbn().isEmpty()) {
+			throw new ExcepcionCampoVacio("isbn", "El ISBN no puede estar vacío");
+		}
+		return mangasService.agregarManga(manga);
 	}
 
 	// Actualizar un manga
 	@PutMapping("/{id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public Manga updateBook(@PathVariable Long id, @RequestBody Manga bookDetails) {
-		return mangasService.actualizarManga(id, bookDetails);
+	public Manga updateManga(@PathVariable Long id, @RequestBody Manga mangaDetails) {
+		return mangasService.actualizarManga(id, mangaDetails);
 	}
 
 	// Eliminar un manga
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public void deleteBook(@PathVariable Long id) {
+	public void deleteManga(@PathVariable Long id) {
 		mangasService.eliminarManga(id);
 	}
 

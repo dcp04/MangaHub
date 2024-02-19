@@ -92,6 +92,10 @@ public class Usuario implements UserDetails {
 		this.roles = roles;
 	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public Long getId() {
 		return id;
 	}

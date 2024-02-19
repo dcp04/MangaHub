@@ -13,6 +13,7 @@ import mangahub.app.entities.Manga;
 import mangahub.app.entities.Reserva;
 import mangahub.app.entities.Usuario;
 import mangahub.app.error.exception.MangaNotFoundException;
+import mangahub.app.error.exception.ReservaNotFoundException;
 import mangahub.app.error.exception.UserNotFoundException;
 import mangahub.app.repository.MangaRepository;
 import mangahub.app.repository.ReservaRepository;
@@ -60,35 +61,52 @@ public class ReservaServiceImpl implements ReservaService {
 
 		return reservaRepositorio.save(reserva);
 	}
-
 	@Override
 	public Reserva cancelarReserva(Long reservaId) {
-		return null;
+	    Optional<Reserva> reservaOptional = reservaRepositorio.findById(reservaId);
+	    if (reservaOptional.isPresent()) {
+	        Reserva reserva = reservaOptional.get();
+	        reserva.setEstadoReserva(EstadoReserva.CANCELADA);
+	        return reservaRepositorio.save(reserva);
+	    } else {
+	        // Manejar el caso en el que la reserva no existe
+	        throw new ReservaNotFoundException("Reserva no encontrada con ID: " + reservaId);
+	    }
 	}
 
 	@Override
 	public Reserva actualizarEstadoReserva(Long reservaId, EstadoReserva nuevoEstado) {
-		return null;
+	    Optional<Reserva> reservaOptional = reservaRepositorio.findById(reservaId);
+	    if (reservaOptional.isPresent()) {
+	        Reserva reserva = reservaOptional.get();
+	        reserva.setEstadoReserva(nuevoEstado);
+	        return reservaRepositorio.save(reserva);
+	    } else {
+	        throw new ReservaNotFoundException("Reserva no encontrada con ID: " + reservaId);
+	    }
 	}
 
 	@Override
-	public Optional<Reserva> obtenerReservaPorId(Long reservaId) {
-		return Optional.empty();
+	public Reserva obtenerReservaPorId(Long reservaId) {
+	    return reservaRepositorio.findById(reservaId)
+	            .orElseThrow(() -> new ReservaNotFoundException("Reserva no encontrada con ID: " + reservaId));
 	}
+
 
 	@Override
 	public List<Reserva> listarTodasLasReservas() {
-		return null;
+		return reservaRepositorio.findAll(); 
 	}
 
 	@Override
-	public List<Reserva> listarReservasPorUsuario(Long usuarioId) {
-		return null;
+	public Optional<Reserva> listarReservasPorUsuario(Long usuarioId) {
+		return reservaRepositorio.findById(usuarioId);
 	}
 
 	@Override
 	public boolean esMangaDisponibleParaReserva(Long mangaId) {
-		return true;
+		Optional<Manga> mangaOptional = mangaRepositorio.findById(mangaId);
+		return mangaOptional.isPresent() && mangaOptional.get().isDisponibleParaReserva();
 	}
 
 }

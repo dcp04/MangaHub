@@ -14,11 +14,11 @@ public interface ReservaService {
 
 	Reserva actualizarEstadoReserva(Long reservaId, EstadoReserva nuevoEstado);
 
-	Optional<Reserva> obtenerReservaPorId(Long reservaId);
+	Reserva obtenerReservaPorId(Long reservaId);
 
 	List<Reserva> listarTodasLasReservas();
 
-	List<Reserva> listarReservasPorUsuario(Long usuarioId);
+	Optional<Reserva> listarReservasPorUsuario(Long usuarioId);
 
 	boolean esMangaDisponibleParaReserva(Long mangaId);
 

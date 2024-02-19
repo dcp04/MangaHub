@@ -22,6 +22,7 @@ public class Manga {
 
 	@NotBlank(message = "El autor no puede estar vacío")
 	private String autor;
+	private boolean disponibleParaReserva;
 
 	@Column(unique = true)
 	@NotBlank(message = "El ISBN no puede estar vacío")
@@ -55,6 +56,14 @@ public class Manga {
 
 	public String getIsbn() {
 		return isbn;
+	}
+
+	public boolean isDisponibleParaReserva() {
+		return disponibleParaReserva;
+	}
+
+	public void setDisponibleParaReserva(boolean disponibleParaReserva) {
+		this.disponibleParaReserva = disponibleParaReserva;
 	}
 
 	public void setIsbn(String isbn) {
