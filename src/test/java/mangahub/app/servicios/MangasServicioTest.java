@@ -1,4 +1,4 @@
-package mangahub.app.servicios.usuario;
+package mangahub.app.servicios;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;

@@ -25,57 +25,89 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import mangahub.app.entities.Role;
 import mangahub.app.service.UserService;
 
+/**
+ * Clase de configuración para la seguridad de la aplicación.
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
-	@Autowired
-	JwtAuthenticationFilter jwtAuthenticationFilter;
-	@Autowired
-	UserService userService;
 
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(request -> request
+    @Autowired
+    JwtAuthenticationFilter jwtAuthenticationFilter;
 
-				.requestMatchers("/api/v1/auth/**").permitAll().requestMatchers(HttpMethod.GET, "/api/v1/mangas/**")
-				.hasAnyAuthority(Role.ROLE_USER.toString(), Role.ROLE_ADMIN.toString())
-				.requestMatchers(HttpMethod.POST, "/api/v1/mangas/*/reservar/**")
-				.hasAuthority(Role.ROLE_USER.toString())
+    @Autowired
+    UserService userService;
 
-				.requestMatchers(HttpMethod.POST, "/api/v1/mangas/**").hasAuthority(Role.ROLE_ADMIN.toString())
-				.requestMatchers(HttpMethod.PUT, "/api/v1/mangas/**").hasAuthority(Role.ROLE_ADMIN.toString())
+    /**
+     * Configura la cadena de filtros de seguridad.
+     * 
+     * @param http El objeto HttpSecurity.
+     * @return La cadena de filtros de seguridad.
+     * @throws Exception Si hay un error en la configuración.
+     */
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(request -> request
+                .requestMatchers("/api/v1/auth/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/mangas/**").hasAnyAuthority(Role.ROLE_USER.toString(), Role.ROLE_ADMIN.toString())
+                .requestMatchers(HttpMethod.POST, "/api/v1/mangas/*/reservar/**").hasAuthority(Role.ROLE_USER.toString())
+                .requestMatchers(HttpMethod.POST, "/api/v1/mangas/**").hasAuthority(Role.ROLE_ADMIN.toString())
+                .requestMatchers(HttpMethod.PUT, "/api/v1/mangas/**").hasAuthority(Role.ROLE_ADMIN.toString())
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/mangas/**").hasAuthority(Role.ROLE_ADMIN.toString())
+                .requestMatchers("/api/v1/users/**").hasAuthority("ROLE_ADMIN")
+                .anyRequest().authenticated())
+            .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
+            .cors(Customizer.withDefaults())
+            .authenticationProvider(authenticationProvider())
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        return http.build();
+    }
 
-				.requestMatchers(HttpMethod.DELETE, "/api/v1/mangas/**").hasAuthority(Role.ROLE_ADMIN.toString())
-				.requestMatchers("/api/v1/users/**").hasAuthority("ROLE_ADMIN").anyRequest().authenticated())
-				.sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS)).cors(Customizer.withDefaults())
-				.authenticationProvider(authenticationProvider())
-				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-		return http.build();
-	}
+    /**
+     * Configura el codificador de contraseñas.
+     * 
+     * @return El codificador de contraseñas.
+     */
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    /**
+     * Configura el proveedor de autenticación.
+     * 
+     * @return El proveedor de autenticación.
+     */
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userService.userDetailsService());
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
 
-	@Bean
-	public AuthenticationProvider authenticationProvider() {
-		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-		authProvider.setUserDetailsService(userService.userDetailsService());
-		authProvider.setPasswordEncoder(passwordEncoder());
-		return authProvider;
-	}
+    /**
+     * Configura el administrador de autenticación.
+     * 
+     * @param config La configuración de autenticación.
+     * @return El administrador de autenticación.
+     * @throws Exception Si hay un error al obtener el administrador de autenticación.
+     */
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
 
-	@Bean
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-		return config.getAuthenticationManager();
-	}
-
-	@Bean
-	public CorsConfigurationSource corsConfigurationSource() {
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
-		return source;
-	}
-
+    /**
+     * Configura el origen de configuración CORS.
+     * 
+     * @return El origen de configuración CORS.
+     */
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        return source;
+    }
 }

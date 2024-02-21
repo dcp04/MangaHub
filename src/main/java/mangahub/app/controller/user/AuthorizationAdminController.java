@@ -18,16 +18,21 @@ import mangahub.app.service.UserService;
 @RequestMapping("/api/v1/users")
 public class AuthorizationAdminController {
 
-	private static final Logger logger = LoggerFactory.getLogger(AuthorizationAdminController.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuthorizationAdminController.class);
 
-	@Autowired
-	private UserService userService;
+    @Autowired
+    private UserService userService;
 
-	@GetMapping
-	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
-	public ResponseEntity<List<UsuarioResponse>> showUsers() {
-		logger.info("## AuthorizationAdminController :: showUsers");
-		List<UsuarioResponse> userList = userService.getAllUsers();
-		return ResponseEntity.ok(userList);
-	}
+    /**
+     * Método para obtener una lista de todos los usuarios.
+     * Solo accesible por los usuarios con el rol de administrador (ROLE_ADMIN).
+     * @return ResponseEntity<List<UsuarioResponse>> Lista de usuarios junto con su información.
+     */
+    @GetMapping
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<List<UsuarioResponse>> showUsers() {
+        logger.info("## AuthorizationAdminController :: showUsers");
+        List<UsuarioResponse> userList = userService.getAllUsers();
+        return ResponseEntity.ok(userList);
+    }
 }

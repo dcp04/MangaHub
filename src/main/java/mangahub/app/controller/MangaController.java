@@ -37,99 +37,102 @@ import mangahub.app.service.user.ReservaService;
 @RequestMapping("/api/v1/mangas")
 public class MangaController {
 
-	private static final Logger logger = LoggerFactory.getLogger(MangaController.class);
+    private static final Logger logger = LoggerFactory.getLogger(MangaController.class);
 
-	@Autowired
-	private MangasService mangasService;
+    @Autowired
+    private MangasService mangasService;
 
-	@Autowired
-	private ReservaService reservaService;
+    @Autowired
+    private ReservaService reservaService;
 
-	// Endpoint para obtener un listado de mangas, accesible solo por ROLE_USER
-	@GetMapping
-	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
-	public ResponseEntity<Page<Manga>> listarTodosLosMangas(@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "10") int size) {
+    // Endpoint para obtener un listado de mangas, accesible solo por ROLE_USER
+    @GetMapping
+    @PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Page<Manga>> listarTodosLosMangas(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
 
-		logger.info("MangasController :: listarTodosLosMangas");
-		Pageable pageable = PageRequest.of(page, size);
-		Page<Manga> mangas = mangasService.listarTodosLosMangas(pageable);
+        logger.info("MangasController :: listarTodosLosMangas");
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Manga> mangas = mangasService.listarTodosLosMangas(pageable);
 
-		return new ResponseEntity<>(mangas, HttpStatus.OK);
-	}
+        return new ResponseEntity<>(mangas, HttpStatus.OK);
+    }
 
-	// Leer un manga por ID
-	@GetMapping("/{id}")
-	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
-	public Manga getMangaById(@PathVariable Long id) {
-		return mangasService.obtenerMangaPorId(id);
-	}
+    // Leer un manga por ID
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
+    public Manga getMangaById(@PathVariable Long id) {
+        return mangasService.obtenerMangaPorId(id);
+    }
 
-	// CRUD endpoints, accesibles solo por ROLE_ADMIN
-	// Crear un nuevo manga
-	@PostMapping
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public Manga createManga(@RequestBody Manga manga) {
-		if (manga.getTitulo() == null || manga.getTitulo().isEmpty()) {
-			throw new ExcepcionCampoVacio("titulo", "El título no puede estar vacío");
-		}
+    // CRUD endpoints, accesibles solo por ROLE_ADMIN
+    // Crear un nuevo manga
+    @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Manga createManga(@RequestBody Manga manga) {
+        if (manga.getTitulo() == null || manga.getTitulo().isEmpty()) {
+            throw new ExcepcionCampoVacio("titulo", "El título no puede estar vacío");
+        }
 
-		if (manga.getAutor() == null || manga.getAutor().isEmpty()) {
-			throw new ExcepcionCampoVacio("autor", "El autor no puede estar vacío");
-		}
+        if (manga.getAutor() == null || manga.getAutor().isEmpty()) {
+            throw new ExcepcionCampoVacio("autor", "El autor no puede estar vacío");
+        }
 
-		if (manga.getIsbn() == null || manga.getIsbn().isEmpty()) {
-			throw new ExcepcionCampoVacio("isbn", "El ISBN no puede estar vacío");
-		}
-		return mangasService.agregarManga(manga);
-	}
+        if (manga.getIsbn() == null || manga.getIsbn().isEmpty()) {
+            throw new ExcepcionCampoVacio("isbn", "El ISBN no puede estar vacío");
+        }
+        return mangasService.agregarManga(manga);
+    }
 
-	// Actualizar un manga
-	@PutMapping("/{id}")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public Manga updateManga(@PathVariable Long id, @RequestBody Manga mangaDetails) {
-		return mangasService.actualizarManga(id, mangaDetails);
-	}
+    // Actualizar un manga
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Manga updateManga(@PathVariable Long id, @RequestBody Manga mangaDetails) {
+        return mangasService.actualizarManga(id, mangaDetails);
+    }
 
-	// Eliminar un manga
-	@DeleteMapping("/{id}")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public void deleteManga(@PathVariable Long id) {
-		mangasService.eliminarManga(id);
-	}
+    // Eliminar un manga
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void deleteManga(@PathVariable Long id) {
+        mangasService.eliminarManga(id);
+    }
 
-	@PostMapping("/{mangaId}/reservar")
-	@PreAuthorize("hasRole('ROLE_USER')")
-	public ResponseEntity<?> realizarReserva(@PathVariable Long mangaId, @AuthenticationPrincipal Usuario usuario) {
-		try {
-			// Agregar log de la operación
-			logger.info("MangasController :: realizarReserva id Manga: {} Usuario: {}", mangaId, usuario.getUsername());
+    // Endpoint para realizar una reserva de manga, accesible solo por ROLE_USER
+    @PostMapping("/{mangaId}/reservar")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<?> realizarReserva(@PathVariable Long mangaId, @AuthenticationPrincipal Usuario usuario) {
+        try {
+            // Agregar log de la operación
+            logger.info("MangasController :: realizarReserva id Manga: {} Usuario: {}", mangaId, usuario.getUsername());
 
-			if (!reservaService.esMangaDisponibleParaReserva(mangaId)) {
-				ErrorDetailsResponse errorDetails = new ErrorDetailsResponse(new Date(), "Conflicto",
-						"El manga no está disponible para reserva.");
-				return ResponseEntity.status(HttpStatus.CONFLICT).body(errorDetails);
-			}
+            // Verificar si el manga está disponible para reserva
+            if (!reservaService.esMangaDisponibleParaReserva(mangaId)) {
+                ErrorDetailsResponse errorDetails = new ErrorDetailsResponse(new Date(), "Conflicto",
+                        "El manga no está disponible para reserva.");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(errorDetails);
+            }
 
-			LocalDate fechaReserva = LocalDate.now();
-			LocalDate fechaExpiracion = fechaReserva.plusDays(7);
+            // Obtener la fecha actual y calcular la fecha de expiración de la reserva
+            LocalDate fechaReserva = LocalDate.now();
+            LocalDate fechaExpiracion = fechaReserva.plusDays(7);
 
-			Long usuarioId = usuario.getId();
+            Long usuarioId = usuario.getId();
 
-			Reserva reserva = reservaService.crearReserva(mangaId, usuarioId, fechaReserva, fechaExpiracion);
-			DetailsResponse details_reserva = new DetailsResponse(new Date(),
-					"Reservado:'" + reserva.getManga().getTitulo() + "', " + reserva.getManga().getAutor(),
-					"Expiración reserva:'" + reserva.getFechaExpiracion() + "'"
-
-			);
-			return ResponseEntity.status(HttpStatus.CREATED).body(details_reserva);
-		} catch (EntityNotFoundException e) {
-			ErrorDetailsResponse errorDetails = new ErrorDetailsResponse(new Date(), "No encontrado", e.getMessage());
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDetails);
-		} catch (Exception e) {
-			ErrorDetailsResponse errorDetails = new ErrorDetailsResponse(new Date(), "Error interno del servidor",
-					e.getMessage());
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorDetails);
-		}
-	}
+            // Crear la reserva
+            Reserva reserva = reservaService.crearReserva(mangaId, usuarioId, fechaReserva, fechaExpiracion);
+            DetailsResponse details_reserva = new DetailsResponse(new Date(),
+                    "Reservado:'" + reserva.getManga().getTitulo() + "', " + reserva.getManga().getAutor(),
+                    "Expiración reserva:'" + reserva.getFechaExpiracion() + "'"
+            );
+            return ResponseEntity.status(HttpStatus.CREATED).body(details_reserva);
+        } catch (EntityNotFoundException e) {
+            ErrorDetailsResponse errorDetails = new ErrorDetailsResponse(new Date(), "No encontrado", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDetails);
+        } catch (Exception e) {
+            ErrorDetailsResponse errorDetails = new ErrorDetailsResponse(new Date(), "Error interno del servidor",
+                    e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorDetails);
+        }
+    }
 }

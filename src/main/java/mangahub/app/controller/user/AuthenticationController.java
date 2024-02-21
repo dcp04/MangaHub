@@ -19,16 +19,20 @@ import mangahub.app.service.user.AuthenticationService;
 @RequiredArgsConstructor
 @CrossOrigin
 public class AuthenticationController {
-	@Autowired
-	AuthenticationService authenticationService;
+    
+    // Servicio de autenticación
+    @Autowired
+    AuthenticationService authenticationService;
 
-	@PostMapping("/signup")
-	public ResponseEntity<JwtAuthenticationResponse> signup(@RequestBody SignUpRequest request) {
-		return ResponseEntity.ok(authenticationService.signup(request));
-	}
+    // Endpoint para registrar un nuevo usuario
+    @PostMapping("/signup")
+    public ResponseEntity<JwtAuthenticationResponse> signup(@RequestBody SignUpRequest request) {
+        return ResponseEntity.ok(authenticationService.signup(request));
+    }
 
-	@PostMapping("/signin")
-	public ResponseEntity<JwtAuthenticationResponse> signin(@RequestBody SigninRequest request) {
-		return ResponseEntity.ok(authenticationService.signin(request));
-	}
+    // Endpoint para iniciar sesión de usuario
+    @PostMapping("/signin")
+    public ResponseEntity<JwtAuthenticationResponse> signin(@RequestBody SigninRequest request) {
+        return ResponseEntity.ok(authenticationService.signin(request));
+    }
 }

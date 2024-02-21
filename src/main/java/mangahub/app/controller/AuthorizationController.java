@@ -13,27 +13,42 @@ import lombok.RequiredArgsConstructor;
 import mangahub.app.dto.response.user.UsuarioResponse;
 import mangahub.app.entities.Usuario;
 
+/**
+ * Controlador para gestionar los recursos protegidos por autorización.
+ */
 @RestController
 @RequestMapping("/api/v1/resources")
 @RequiredArgsConstructor
 @CrossOrigin
 public class AuthorizationController {
-	private static final Logger logger = LoggerFactory.getLogger(AuthorizationController.class);
 
-	@GetMapping
-	public ResponseEntity<String> sayHello() {
-		logger.info("## AuthorizationController :: sayHello");
-		return ResponseEntity.ok("Here is your resource");
-	}
+    private static final Logger logger = LoggerFactory.getLogger(AuthorizationController.class);
 
-	@GetMapping("/perfil")
-	public ResponseEntity<UsuarioResponse> miPerfil(@AuthenticationPrincipal Usuario usuario) {
-		logger.info("## AuthorizationController :: miPerfil");
+    /**
+     * Método para obtener un recurso protegido.
+     * 
+     * @return Una respuesta HTTP con el mensaje de éxito.
+     */
+    @GetMapping
+    public ResponseEntity<String> sayHello() {
+        logger.info("## AuthorizationController :: sayHello");
+        return ResponseEntity.ok("Here is your resource");
+    }
 
-		UsuarioResponse userResponse = new UsuarioResponse(usuario.getFirstName(), usuario.getLastName(),
-				usuario.getEmail(), usuario.getRoles().toString());
+    /**
+     * Método para obtener el perfil del usuario autenticado.
+     * 
+     * @param usuario El usuario autenticado.
+     * @return Una respuesta HTTP con los detalles del perfil del usuario.
+     */
+    @GetMapping("/perfil")
+    public ResponseEntity<UsuarioResponse> miPerfil(@AuthenticationPrincipal Usuario usuario) {
+        logger.info("## AuthorizationController :: miPerfil");
 
-		return ResponseEntity.ok(userResponse);
-	}
+        UsuarioResponse userResponse = new UsuarioResponse(usuario.getFirstName(), usuario.getLastName(),
+                usuario.getEmail(), usuario.getRoles().toString());
+
+        return ResponseEntity.ok(userResponse);
+    }
 
 }

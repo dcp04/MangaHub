@@ -21,37 +21,51 @@ import lombok.RequiredArgsConstructor;
 import mangahub.app.service.UserService;
 import mangahub.app.service.user.JwtService;
 
+/**
+ * Este filtro se encarga de la autenticación mediante JWT.
+ */
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-	@Autowired
-	private JwtService jwtService;
-	@Autowired
-	private UserService userService;
 
-	@Override
-	protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
-			@NonNull FilterChain filterChain) throws ServletException, IOException {
-		final String authHeader = request.getHeader("Authorization");
-		final String jwt;
-		final String userEmail;
-		if (StringUtils.isEmpty(authHeader) || !StringUtils.startsWith(authHeader, "Bearer ")) {
-			filterChain.doFilter(request, response);
-			return;
-		}
-		jwt = authHeader.substring(7);
-		userEmail = jwtService.extractUserName(jwt);
-		if (StringUtils.isNotEmpty(userEmail) && SecurityContextHolder.getContext().getAuthentication() == null) {
-			UserDetails userDetails = userService.userDetailsService().loadUserByUsername(userEmail);
-			if (jwtService.isTokenValid(jwt, userDetails)) {
-				SecurityContext context = SecurityContextHolder.createEmptyContext();
-				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
-						null, userDetails.getAuthorities());
-				authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-				context.setAuthentication(authToken);
-				SecurityContextHolder.setContext(context);
-			}
-		}
-		filterChain.doFilter(request, response);
-	}
+    @Autowired
+    private JwtService jwtService;
+    
+    @Autowired
+    private UserService userService;
+
+    /**
+     * Método para realizar la lógica de filtrado para autenticación JWT.
+     * 
+     * @param request     El objeto HttpServletRequest.
+     * @param response    El objeto HttpServletResponse.
+     * @param filterChain El objeto FilterChain.
+     * @throws ServletException Si ocurre un error de servlet.
+     * @throws IOException      Si ocurre un error de entrada/salida.
+     */
+    @Override
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain) throws ServletException, IOException {
+        final String authHeader = request.getHeader("Authorization");
+        final String jwt;
+        final String userEmail;
+        if (StringUtils.isEmpty(authHeader) || !StringUtils.startsWith(authHeader, "Bearer ")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        jwt = authHeader.substring(7);
+        userEmail = jwtService.extractUserName(jwt);
+        if (StringUtils.isNotEmpty(userEmail) && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = userService.userDetailsService().loadUserByUsername(userEmail);
+            if (jwtService.isTokenValid(jwt, userDetails)) {
+                SecurityContext context = SecurityContextHolder.createEmptyContext();
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
+                        null, userDetails.getAuthorities());
+                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                context.setAuthentication(authToken);
+                SecurityContextHolder.setContext(context);
+            }
+        }
+        filterChain.doFilter(request, response);
+    }
 }

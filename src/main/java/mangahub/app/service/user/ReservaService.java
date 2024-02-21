@@ -18,7 +18,7 @@ public interface ReservaService {
 
 	List<Reserva> listarTodasLasReservas();
 
-	Optional<Reserva> listarReservasPorUsuario(Long usuarioId);
+	public Optional<Reserva> listarReservasPorUsuario(Long usuarioId);
 
 	boolean esMangaDisponibleParaReserva(Long mangaId);
 

@@ -69,7 +69,6 @@ public class ReservaServiceImpl implements ReservaService {
 	        reserva.setEstadoReserva(EstadoReserva.CANCELADA);
 	        return reservaRepositorio.save(reserva);
 	    } else {
-	        // Manejar el caso en el que la reserva no existe
 	        throw new ReservaNotFoundException("Reserva no encontrada con ID: " + reservaId);
 	    }
 	}
