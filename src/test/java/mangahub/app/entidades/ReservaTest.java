@@ -11,8 +11,14 @@ import mangahub.app.entities.Manga;
 import mangahub.app.entities.Reserva;
 import mangahub.app.entities.Usuario;
 
+/**
+ * Prueba unitaria para la clase Reserva, que verifica los métodos getter y setter.
+ */
 public class ReservaTest {
 
+    /**
+     * Prueba para verificar los métodos getter y setter de la clase Reserva.
+     */
     @Test
     public void testGetterAndSetter() {
         // Datos de ejemplo

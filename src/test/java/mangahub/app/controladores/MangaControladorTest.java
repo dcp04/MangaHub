@@ -31,6 +31,9 @@ import mangahub.app.error.exception.ExcepcionCampoVacio;
 import mangahub.app.service.MangasService;
 import mangahub.app.service.user.ReservaService;
 
+/**
+ * Clase de prueba para el controlador de Manga.
+ */
 @ExtendWith(MockitoExtension.class)
 public class MangaControladorTest {
 
@@ -43,6 +46,9 @@ public class MangaControladorTest {
     @InjectMocks
     private MangaController mangaController;
 
+    /**
+     * Prueba para verificar el método de listar todos los mangas.
+     */
     @Test
     public void testListarTodosLosMangas() {
     	List<Manga> listaMangas = new ArrayList<>();
@@ -74,6 +80,9 @@ public class MangaControladorTest {
         assertEquals(mangas, response.getBody());
     }
 
+    /**
+     * Prueba para verificar el método de obtener manga por ID.
+     */
     @Test
     public void testGetMangaById() {
         // Simulando el manga devuelto por el servicio
@@ -88,6 +97,9 @@ public class MangaControladorTest {
         assertEquals(manga, mangaObtenido);
     }
 
+    /**
+     * Prueba para verificar el método de crear manga.
+     */
     @Test
     public void testCreateManga() {
         // Datos de ejemplo
@@ -106,6 +118,9 @@ public class MangaControladorTest {
         assertEquals(manga, mangaCreado);
     }
 
+    /**
+     * Prueba para verificar el método de crear manga con campos vacíos.
+     */
     @Test
     public void testCreateMangaWithEmptyFields() {
         // Datos de ejemplo con campos vacíos
@@ -118,6 +133,9 @@ public class MangaControladorTest {
         verifyNoInteractions(mangasService);
     }
 
+    /**
+     * Prueba para verificar el método de actualizar manga.
+     */
     @Test
     public void testUpdateManga() {
         // Datos de ejemplo
@@ -137,6 +155,9 @@ public class MangaControladorTest {
         assertEquals(manga, mangaActualizado);
     }
 
+    /**
+     * Prueba para verificar el método de eliminar manga.
+     */
     @Test
     public void testDeleteManga() {
         // Llamando al método del controlador
@@ -146,6 +167,9 @@ public class MangaControladorTest {
         verify(mangasService, times(1)).eliminarManga(1L);
     }
 
+    /**
+     * Prueba para verificar el método de realizar reserva.
+     */
     @Test
     public void testRealizarReserva() {
         // Datos de ejemplo
@@ -173,4 +197,3 @@ public class MangaControladorTest {
         // Verifica los detalles de la reserva en el body según lo que se espere
     }
 }
-

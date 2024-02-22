@@ -12,104 +12,131 @@ import org.springframework.security.core.userdetails.UserDetails;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 
+/**
+ * Representa un usuario en el sistema.
+ */
 @Entity
 public class Usuario implements UserDetails {
-	private static final long serialVersionUID = 1L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private String firstName;
-	private String lastName;
-	@Column(unique = true)
-	private String email;
-	private String password;
+    private static final long serialVersionUID = 1L;
 
-	@ElementCollection(fetch = FetchType.EAGER, targetClass = Role.class)
-	@Enumerated(EnumType.STRING)
-	@CollectionTable(name = "usuario_rol")
-	@Column(name = "RolesUsuario")
-	private Set<Role> roles = new HashSet<>();
+    /**
+     * Identificador único del usuario.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Transactional
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		roles.size();
+    /**
+     * Nombre del usuario.
+     */
+    private String firstName;
 
-		return roles.stream().map(role -> new SimpleGrantedAuthority(role.name())).collect(Collectors.toList());
-	}
+    /**
+     * Apellido del usuario.
+     */
+    private String lastName;
 
-	@Override
-	public String getUsername() {
-		return email;
-	}
+    /**
+     * Correo electrónico del usuario.
+     */
+    @Column(unique = true)
+    private String email;
 
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
+    /**
+     * Contraseña del usuario.
+     */
+    private String password;
 
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
-	}
+    /**
+     * Roles del usuario.
+     */
+    @ElementCollection(fetch = FetchType.EAGER, targetClass = Role.class)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "usuario_rol")
+    @Column(name = "RolesUsuario")
+    private Set<Role> roles = new HashSet<>();
 
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
+    @Transactional
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        roles.size();
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.name()))
+                .collect(Collectors.toList());
+    }
 
-	@Override
-	public boolean isEnabled() {
-		return true;
-	}
+    @Override
+    public String getUsername() {
+        return email;
+    }
 
-	@Override
-	public String getPassword() {
-		return password;
-	}
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    @Override
+    public String getPassword() {
+        return password;
+    }
 
-	public Set<Role> getRoles() {
-		return roles;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public Set<Role> getRoles() {
+        return roles;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 
 }

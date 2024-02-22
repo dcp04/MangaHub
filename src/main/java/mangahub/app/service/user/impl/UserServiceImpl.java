@@ -14,29 +14,43 @@ import mangahub.app.dto.response.user.UsuarioResponse;
 import mangahub.app.repository.UserRepository;
 import mangahub.app.service.UserService;
 
+/**
+ * Implementación del servicio UserService que proporciona operaciones relacionadas con los usuarios.
+ */
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-	@Autowired
-	private UserRepository userRepository;
 
-	@Override
-	public UserDetailsService userDetailsService() {
-		return new UserDetailsService() {
-			@Override
-			public UserDetails loadUserByUsername(String username) {
-				return userRepository.findByEmail(username)
-						.orElseThrow(() -> new UsernameNotFoundException("User not found"));
-			}
-		};
-	}
+    @Autowired
+    private UserRepository userRepository;
 
-	@Override
-	public List<UsuarioResponse> getAllUsers() {
-		List<UsuarioResponse> allUsers = userRepository.findAll().stream()
-				.map(usuario -> new UsuarioResponse(usuario.getFirstName(), usuario.getLastName(), usuario.getEmail(),
-						usuario.getRoles().toString()))
-				.collect(Collectors.toList());
-		return allUsers;
-	}
+    /**
+     * Retorna un UserDetailsService para la autenticación de usuarios.
+     *
+     * @return Un UserDetailsService.
+     */
+    @Override
+    public UserDetailsService userDetailsService() {
+        return new UserDetailsService() {
+            @Override
+            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+                return userRepository.findByEmail(username)
+                        .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+            }
+        };
+    }
+
+    /**
+     * Obtiene todos los usuarios y los convierte en una lista de respuestas de usuario.
+     *
+     * @return Una lista de UsuarioResponse que contiene los detalles de todos los usuarios.
+     */
+    @Override
+    public List<UsuarioResponse> getAllUsers() {
+        List<UsuarioResponse> allUsers = userRepository.findAll().stream()
+                .map(usuario -> new UsuarioResponse(usuario.getFirstName(), usuario.getLastName(), usuario.getEmail(),
+                        usuario.getRoles().toString()))
+                .collect(Collectors.toList());
+        return allUsers;
+    }
 }

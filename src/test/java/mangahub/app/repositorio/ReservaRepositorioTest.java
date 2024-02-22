@@ -18,39 +18,40 @@ import mangahub.app.repository.ReservaRepository;
 import mangahub.app.service.impl.ReservaServiceImpl;
 import mangahub.app.service.user.ReservaService;
 
+/**
+ * Pruebas unitarias para el repositorio de reservas.
+ */
 @ExtendWith(MockitoExtension.class)
 public class ReservaRepositorioTest {
 
-	@Mock
-	private ReservaRepository reservaRepository;
+    @Mock
+    private ReservaRepository reservaRepository;
 
-	@InjectMocks
-	private ReservaService reservaService = new ReservaServiceImpl();
+    @InjectMocks
+    private ReservaService reservaService = new ReservaServiceImpl();
 
-	@Test
-	public void testObtenerReservaPorId() {
-		Long reservaId = 1L;
-		Reserva reservaMock = new Reserva();
-		reservaMock.setId(reservaId);
+    /**
+     * Prueba para verificar la obtención de una reserva por su ID.
+     */
+    @Test
+    public void testObtenerReservaPorId() {
+        Long reservaId = 1L;
+        Reserva reservaMock = new Reserva();
+        reservaMock.setId(reservaId);
+        when(reservaRepository.findById(reservaId)).thenReturn(Optional.of(reservaMock));
+        Reserva result = reservaService.obtenerReservaPorId(reservaId);
+        assertEquals(reservaMock, result);
+    }
 
-		when(reservaRepository.findById(reservaId)).thenReturn(Optional.of(reservaMock));
-
-		Reserva result = reservaService.obtenerReservaPorId(reservaId);
-
-		// Verificando el resultado
-		assertEquals(reservaMock, result);
-	}
-
-	@Test
-	public void testObtenerReservaPorIdNoExiste() {
-		Long reservaId = 1L;
-
-		// Configurando el comportamiento simulado del repositorio
-		when(reservaRepository.findById(reservaId)).thenReturn(Optional.empty());
-
-		// Llamando al método que estamos probando y verificando que lance una excepción
-		assertThrows(ReservaNotFoundException.class, () -> {
-			reservaService.obtenerReservaPorId(reservaId);
-		});
-	}
+    /**
+     * Prueba para verificar la excepción lanzada al intentar obtener una reserva por un ID que no existe.
+     */
+    @Test
+    public void testObtenerReservaPorIdNoExiste() {
+        Long reservaId = 1L;
+        when(reservaRepository.findById(reservaId)).thenReturn(Optional.empty());
+        assertThrows(ReservaNotFoundException.class, () -> {
+            reservaService.obtenerReservaPorId(reservaId);
+        });
+    }
 }

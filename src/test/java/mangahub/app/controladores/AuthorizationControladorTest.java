@@ -1,4 +1,5 @@
 package mangahub.app.controladores;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -18,6 +19,9 @@ import mangahub.app.dto.response.user.UsuarioResponse;
 import mangahub.app.entities.Role;
 import mangahub.app.entities.Usuario;
 
+/**
+ * Clase de prueba para el controlador de autorización.
+ */
 @ExtendWith(MockitoExtension.class)
 public class AuthorizationControladorTest {
 
@@ -27,6 +31,9 @@ public class AuthorizationControladorTest {
     @Mock
     private Usuario usuario;
 
+    /**
+     * Prueba para verificar el método sayHello del controlador.
+     */
     @Test
     public void testSayHello() {
         // Llamando al método del controlador
@@ -37,6 +44,9 @@ public class AuthorizationControladorTest {
         assertEquals("Here is your resource", response.getBody());
     }
 
+    /**
+     * Prueba para verificar el método miPerfil del controlador.
+     */
     @Test
     public void testMiPerfil() {
         // Datos de ejemplo para el usuario

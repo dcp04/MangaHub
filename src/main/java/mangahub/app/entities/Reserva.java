@@ -13,104 +13,227 @@ import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.PastOrPresent;
 
+/**
+ * Representa una reserva de manga.
+ */
 @Entity
 public class Reserva {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    /**
+     * Identificador único de la reserva.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Enumerated(EnumType.STRING)
-	private EstadoReserva estadoReserva;
+    /**
+     * Estado de la reserva.
+     */
+    @Enumerated(EnumType.STRING)
+    private EstadoReserva estadoReserva;
 
-	@ManyToOne
-	@JoinColumn(name = "usuario_id")
-	private Usuario usuario;
+    /**
+     * Usuario que realiza la reserva.
+     */
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
 
-	@ManyToOne
-	@JoinColumn(name = "manga_id")
-	private Manga manga;
+    /**
+     * Manga reservado.
+     */
+    @ManyToOne
+    @JoinColumn(name = "manga_id")
+    private Manga manga;
 
-	@PastOrPresent
-	private LocalDate fechaReserva;
-	@FutureOrPresent
-	private LocalDate fechaExpiracion;
-	@FutureOrPresent
-	private LocalDate fechaRecogida;
-	@FutureOrPresent
-	private LocalDate fechaCancelada;
-	@FutureOrPresent
-	private LocalDate fechaDevolucion;
+    /**
+     * Fecha de la reserva.
+     */
+    @PastOrPresent
+    private LocalDate fechaReserva;
 
-	public Long getId() {
-		return id;
-	}
+    /**
+     * Fecha de expiración de la reserva.
+     */
+    @FutureOrPresent
+    private LocalDate fechaExpiracion;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    /**
+     * Fecha de recogida del manga.
+     */
+    @FutureOrPresent
+    private LocalDate fechaRecogida;
 
-	public EstadoReserva getEstadoReserva() {
-		return estadoReserva;
-	}
+    /**
+     * Fecha de cancelación de la reserva.
+     */
+    @FutureOrPresent
+    private LocalDate fechaCancelada;
 
-	public void setEstadoReserva(EstadoReserva estadoReserva) {
-		this.estadoReserva = estadoReserva;
-	}
+    /**
+     * Fecha de devolución del manga.
+     */
+    @FutureOrPresent
+    private LocalDate fechaDevolucion;
 
-	public Usuario getUsuario() {
-		return usuario;
-	}
+    /**
+     * Obtiene el identificador de la reserva.
+     *
+     * @return El identificador de la reserva.
+     */
+    public Long getId() {
+        return id;
+    }
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
+    /**
+     * Establece el identificador de la reserva.
+     *
+     * @param id El identificador de la reserva.
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public Manga getManga() {
-		return manga;
-	}
+    /**
+     * Obtiene el estado de la reserva.
+     *
+     * @return El estado de la reserva.
+     */
+    public EstadoReserva getEstadoReserva() {
+        return estadoReserva;
+    }
 
-	public void setManga(Manga manga) {
-		this.manga = manga;
-	}
+    /**
+     * Establece el estado de la reserva.
+     *
+     * @param estadoReserva El estado de la reserva.
+     */
+    public void setEstadoReserva(EstadoReserva estadoReserva) {
+        this.estadoReserva = estadoReserva;
+    }
 
-	public LocalDate getFechaReserva() {
-		return fechaReserva;
-	}
+    /**
+     * Obtiene el usuario que realizó la reserva.
+     *
+     * @return El usuario que realizó la reserva.
+     */
+    public Usuario getUsuario() {
+        return usuario;
+    }
 
-	public void setFechaReserva(LocalDate fechaReserva) {
-		this.fechaReserva = fechaReserva;
-	}
+    /**
+     * Establece el usuario que realizó la reserva.
+     *
+     * @param usuario El usuario que realizó la reserva.
+     */
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 
-	public LocalDate getFechaExpiracion() {
-		return fechaExpiracion;
-	}
+    /**
+     * Obtiene el manga reservado.
+     *
+     * @return El manga reservado.
+     */
+    public Manga getManga() {
+        return manga;
+    }
 
-	public void setFechaExpiracion(LocalDate fechaExpiracion) {
-		this.fechaExpiracion = fechaExpiracion;
-	}
+    /**
+     * Establece el manga reservado.
+     *
+     * @param manga El manga reservado.
+     */
+    public void setManga(Manga manga) {
+        this.manga = manga;
+    }
 
-	public LocalDate getFechaRecogida() {
-		return fechaRecogida;
-	}
+    /**
+     * Obtiene la fecha de la reserva.
+     *
+     * @return La fecha de la reserva.
+     */
+    public LocalDate getFechaReserva() {
+        return fechaReserva;
+    }
 
-	public void setFechaRecogida(LocalDate fechaRecogida) {
-		this.fechaRecogida = fechaRecogida;
-	}
+    /**
+     * Establece la fecha de la reserva.
+     *
+     * @param fechaReserva La fecha de la reserva.
+     */
+    public void setFechaReserva(LocalDate fechaReserva) {
+        this.fechaReserva = fechaReserva;
+    }
 
-	public LocalDate getFechaCancelada() {
-		return fechaCancelada;
-	}
+    /**
+     * Obtiene la fecha de expiración de la reserva.
+     *
+     * @return La fecha de expiración de la reserva.
+     */
+    public LocalDate getFechaExpiracion() {
+        return fechaExpiracion;
+    }
 
-	public void setFechaCancelada(LocalDate fechaCancelada) {
-		this.fechaCancelada = fechaCancelada;
-	}
+    /**
+     * Establece la fecha de expiración de la reserva.
+     *
+     * @param fechaExpiracion La fecha de expiración de la reserva.
+     */
+    public void setFechaExpiracion(LocalDate fechaExpiracion) {
+        this.fechaExpiracion = fechaExpiracion;
+    }
 
-	public LocalDate getFechaDevolucion() {
-		return fechaDevolucion;
-	}
+    /**
+     * Obtiene la fecha de recogida del manga.
+     *
+     * @return La fecha de recogida del manga.
+     */
+    public LocalDate getFechaRecogida() {
+        return fechaRecogida;
+    }
 
-	public void setFechaDevolucion(LocalDate fechaDevolucion) {
-		this.fechaDevolucion = fechaDevolucion;
-	}
+    /**
+     * Establece la fecha de recogida del manga.
+     *
+     * @param fechaRecogida La fecha de recogida del manga.
+     */
+    public void setFechaRecogida(LocalDate fechaRecogida) {
+        this.fechaRecogida = fechaRecogida;
+    }
 
+    /**
+     * Obtiene la fecha de cancelación de la reserva.
+     *
+     * @return La fecha de cancelación de la reserva.
+     */
+    public LocalDate getFechaCancelada() {
+        return fechaCancelada;
+    }
+
+    /**
+     * Establece la fecha de cancelación de la reserva.
+     *
+     * @param fechaCancelada La fecha de cancelación de la reserva.
+     */
+    public void setFechaCancelada(LocalDate fechaCancelada) {
+        this.fechaCancelada = fechaCancelada;
+    }
+
+    /**
+     * Obtiene la fecha de devolución del manga.
+     *
+     * @return La fecha de devolución del manga.
+     */
+    public LocalDate getFechaDevolucion() {
+        return fechaDevolucion;
+    }
+
+    /**
+     * Establece la fecha de devolución del manga.
+     *
+     * @param fechaDevolucion La fecha de devolución del manga.
+     */
+    public void setFechaDevolucion(LocalDate fechaDevolucion) {
+        this.fechaDevolucion = fechaDevolucion;
+    }
 }

@@ -23,31 +23,40 @@ import mangahub.app.entities.Manga;
 import mangahub.app.repository.MangaRepository;
 import mangahub.app.service.impl.MangasServiceImpl;
 
+/**
+ * Pruebas unitarias para el repositorio de mangas.
+ */
 @ExtendWith(MockitoExtension.class)
 public class MangaRepositorioTest {
 
-	@Mock
-	private MangaRepository mangaRepositoryMock;
+    @Mock
+    private MangaRepository mangaRepositoryMock;
 
-	@InjectMocks
-	private MangasServiceImpl mangaService;
+    @InjectMocks
+    private MangasServiceImpl mangaService;
 
-	private Manga manga;
-	private List<Manga> mangaList;
+    private Manga manga;
+    private List<Manga> mangaList;
 
-	@BeforeEach
-	void setUp() {
-		manga = new Manga();
-		manga.setId(1L);
-		manga.setTitulo("One Piece");
-		manga.setAutor("Eiichiro Oda");
-		manga.setIsbn("9781234567890");
+    /**
+     * Configuración inicial para las pruebas.
+     */
+    @BeforeEach
+    void setUp() {
+        manga = new Manga();
+        manga.setId(1L);
+        manga.setTitulo("One Piece");
+        manga.setAutor("Eiichiro Oda");
+        manga.setIsbn("9781234567890");
 
-		mangaList = new ArrayList<>();
-		mangaList.add(manga);
-	}
+        mangaList = new ArrayList<>();
+        mangaList.add(manga);
+    }
 
-	@Test
+    /**
+     * Prueba para verificar la obtención de todos los mangas.
+     */
+    @Test
     void testFindAll() {
         when(mangaRepositoryMock.findAll(Pageable.unpaged())).thenReturn(new PageImpl<>(mangaList));
 
@@ -57,7 +66,10 @@ public class MangaRepositorioTest {
         assertTrue(result.getContent().contains(manga));
     }
 
-	@Test
+    /**
+     * Prueba para verificar la obtención de un manga por su ID.
+     */
+    @Test
     void testFindById() {
         when(mangaRepositoryMock.findById(1L)).thenReturn(Optional.of(manga));
 
@@ -67,7 +79,10 @@ public class MangaRepositorioTest {
         assertEquals(manga, result.get());
     }
 
-	@Test
+    /**
+     * Prueba para verificar la creación de un manga.
+     */
+    @Test
     void testSave() {
         when(mangaRepositoryMock.save(manga)).thenReturn(manga);
 
@@ -76,10 +91,13 @@ public class MangaRepositorioTest {
         assertEquals(manga, savedManga);
     }
 
-	@Test
-	void testDeleteById() {
-		mangaService.eliminarManga(1L);
+    /**
+     * Prueba para verificar la eliminación de un manga por su ID.
+     */
+    @Test
+    void testDeleteById() {
+        mangaService.eliminarManga(1L);
 
-		verify(mangaRepositoryMock).deleteById(1L);
-	}
+        verify(mangaRepositoryMock).deleteById(1L);
+    }
 }

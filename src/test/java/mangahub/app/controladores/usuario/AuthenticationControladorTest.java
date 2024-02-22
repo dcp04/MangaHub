@@ -17,6 +17,9 @@ import mangahub.app.dto.request.SigninRequest;
 import mangahub.app.dto.response.user.JwtAuthenticationResponse;
 import mangahub.app.service.user.AuthenticationService;
 
+/**
+ * Clase de prueba para el controlador de autenticación.
+ */
 @ExtendWith(MockitoExtension.class)
 public class AuthenticationControladorTest {
 
@@ -26,6 +29,9 @@ public class AuthenticationControladorTest {
     @Mock
     private AuthenticationService authenticationService;
 
+    /**
+     * Prueba para verificar el método de registro.
+     */
     @Test
     public void testSignup() {
         // Datos de ejemplo para la solicitud de registro
@@ -44,6 +50,9 @@ public class AuthenticationControladorTest {
         assertEquals(authenticationResponse, response.getBody());
     }
 
+    /**
+     * Prueba para verificar el método de inicio de sesión.
+     */
     @Test
     public void testSignin() {
         // Datos de ejemplo para la solicitud de inicio de sesión

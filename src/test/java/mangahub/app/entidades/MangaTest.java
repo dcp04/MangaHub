@@ -17,6 +17,9 @@ import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import mangahub.app.entities.Manga;
 
+/**
+ * Prueba unitaria para la clase Manga.
+ */
 @ExtendWith(MockitoExtension.class)
 public class MangaTest {
 
@@ -25,12 +28,18 @@ public class MangaTest {
     @Mock
     private Manga mockManga;
 
+    /**
+     * Configura el validador antes de cada prueba.
+     */
     @BeforeEach
     public void setUp() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
     }
 
+    /**
+     * Prueba para validar un objeto Manga válido.
+     */
     @Test
     public void testValidManga() {
         Manga manga = new Manga();
@@ -42,6 +51,9 @@ public class MangaTest {
         assertEquals(0, violations.size());
     }
 
+    /**
+     * Prueba para validar un objeto Manga inválido.
+     */
     @Test
     public void testInvalidManga() {
         Manga manga = new Manga();
@@ -53,6 +65,9 @@ public class MangaTest {
         assertEquals(2, violations.size());
     }
 
+    /**
+     * Prueba para verificar el comportamiento del objeto Manga mockeado.
+     */
     @Test
     public void testMockManga() {
         when(mockManga.getTitulo()).thenReturn("Naruto");

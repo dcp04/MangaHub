@@ -1,49 +1,114 @@
 package mangahub.app.dto.response.user;
 
+/**
+ * Representa la respuesta de un usuario.
+ */
 public class UsuarioResponse {
-	private String firstName;
-	private String lastName;
-	private String email;
-	private String rol;
 
-	public UsuarioResponse(String firstName, String lastName, String email, String rol) {
-		super();
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.rol = rol;
-	}
+    /**
+     * El nombre del usuario.
+     */
+    private String firstName;
 
-	public String getFirstName() {
-		return firstName;
-	}
+    /**
+     * El apellido del usuario.
+     */
+    private String lastName;
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    /**
+     * El correo electrónico del usuario.
+     */
+    private String email;
 
-	public String getLastName() {
-		return lastName;
-	}
+    /**
+     * El rol del usuario.
+     */
+    private String rol;
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    /**
+     * Construye un objeto UsuarioResponse con la información proporcionada.
+     *
+     * @param firstName El nombre del usuario.
+     * @param lastName  El apellido del usuario.
+     * @param email     El correo electrónico del usuario.
+     * @param rol       El rol del usuario.
+     */
+    public UsuarioResponse(String firstName, String lastName, String email, String rol) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.rol = rol;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    /**
+     * Obtiene el nombre del usuario.
+     *
+     * @return El nombre del usuario.
+     */
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    /**
+     * Establece el nombre del usuario.
+     *
+     * @param firstName El nombre del usuario.
+     */
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public String getRol() {
-		return rol;
-	}
+    /**
+     * Obtiene el apellido del usuario.
+     *
+     * @return El apellido del usuario.
+     */
+    public String getLastName() {
+        return lastName;
+    }
 
-	public void setRol(String rol) {
-		this.rol = rol;
-	}
+    /**
+     * Establece el apellido del usuario.
+     *
+     * @param lastName El apellido del usuario.
+     */
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
+    /**
+     * Obtiene el correo electrónico del usuario.
+     *
+     * @return El correo electrónico del usuario.
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * Establece el correo electrónico del usuario.
+     *
+     * @param email El correo electrónico del usuario.
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * Obtiene el rol del usuario.
+     *
+     * @return El rol del usuario.
+     */
+    public String getRol() {
+        return rol;
+    }
+
+    /**
+     * Establece el rol del usuario.
+     *
+     * @param rol El rol del usuario.
+     */
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
 }
