@@ -1,7 +1,7 @@
 # MangaHub
 
 ## Documentación de Postman
-https://documenter.getpostman.com/view/32189050/2sA2r6XQCX#6404c277-01aa-4d5f-8a05-9a9dcba7a74f
+https://documenter.getpostman.com/view/32189050/2sA2r6XQCX
 
 ## Descripción
 Mangahub es una aplicación para la gestión de mangas y reservas. Permite a los usuarios explorar y reservar mangas, así como autenticarse de forma segura.
