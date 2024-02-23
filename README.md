@@ -6,6 +6,67 @@ https://documenter.getpostman.com/view/32189050/2sA2r6XQCX
 ## Descripción
 Mangahub es una aplicación para la gestión de mangas y reservas. Permite a los usuarios explorar y reservar mangas, así como autenticarse de forma segura.
 
+## Objetivo y Público
+
+MangaHub es una aplicación diseñada para los entusiastas del manga, que ofrece una amplia variedad de mangas de todo el mundo, incluyendo aquellos que no son tan conocidos pero que cuentan con historias magníficas. Nuestra plataforma se enfoca en brindar a los usuarios una experiencia única y efectiva para descubrir y disfrutar de estos emocionantes mundos narrativos.
+
+## Características Principales
+
+- **Amplia Biblioteca de Mangas:** Ofrecemos una extensa colección de mangas de diversos géneros y estilos, desde clásicos hasta obras más contemporáneas.
+
+- **Descubrimiento Personalizado:** Utilizando algoritmos avanzados, ofrecemos recomendaciones personalizadas para cada usuario, ayudándoles a descubrir mangas que se adapten a sus gustos y preferencias.
+
+- **Entrenamiento Personalizado:** MangaHub ofrece mangas personalizados diseñados para ayudar a los usuarios a mejorar su experiencia de lectura y descubrimiento de mangas.
+
+## Actores
+
+Los actores de la aplicación son:
+
+| Nombre            | Descripción                                                                                                                                                                 |
+|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Administrador     | - Responsable de gestionar y mantener el sistema de MangaHub.<br>- Creación, eliminación y gestión de cuentas de usuario.<br>- Revisión y moderación del contenido.<br>- Actualización y mantenimiento del sistema. |
+| Usuario Registrado| - Persona que ha creado una cuenta en MangaHub.<br>- Puede acceder a entrenamientos personalizados, realizar un seguimiento de su progreso y participar en programas específicos.           |
+| Usuario Anónimo   | - Persona que navega por MangaHub sin haber creado una cuenta.<br>- Puede explorar información general sobre los servicios ofrecidos y obtener una vista previa de las funcionalidades.          |
+
+## Casos De Uso
+
+### CU1: Registrarse
+
+**Actor:** Usuario Anónimo
+
+**Descripción:** Crear una cuenta en la aplicación proporcionando información básica y preferencias de entrenamiento.
+
+### CU2: Iniciar Sesión
+
+**Actor:** Usuario Registrado, Administrador
+
+**Descripción:** Acceder a la cuenta utilizando credenciales previamente registradas.
+
+### CU3: Administrar Contenido
+
+**Actor:** Administrador
+
+**Descripción:** Agregar, editar o eliminar mangas, así como supervisar y gestionar contenido general de la aplicación.
+
+### CU4: Reservar Manga
+
+**Actor:** Usuario Registrado
+
+**Descripción:** Reservar mangas con su id.
+
+### CU5: Explorar Mangas
+
+**Actor:** Usuario Anónimo, Usuario Registrado
+
+**Descripción:** Ver la lista de mangas disponibles.
+
+### CU6: Filtrar Mangas
+
+**Actor:** Usuario Registrado
+
+**Descripción:** Filtrar mangas por título, autor o ambos.
+
+
 ## Estructura del Proyecto
 
 El proyecto está organizado en los siguientes paquetes y clases:
