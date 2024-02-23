@@ -136,4 +136,42 @@ public class MangasServiceImpl implements MangasService {
             throw new ReservaNotFoundException("Reserva no encontrada con ID: " + reservaId);
         }
     }
+    
+    /**
+     * Filtra los mangas por título.
+     * 
+     * @param titulo   El título del manga a filtrar.
+     * @param pageable La información de paginación.
+     * @return Una página de mangas que contienen el título especificado.
+     */
+    @Override
+    public Page<Manga> filtrarPorTitulo(String titulo, Pageable pageable) {
+        return mangaRepository.findByTituloContainingIgnoreCase(titulo, pageable);
+    }
+
+    /**
+     * Filtra los mangas por autor.
+     * 
+     * @param autor    El autor del manga a filtrar.
+     * @param pageable La información de paginación.
+     * @return Una página de mangas que contienen el autor especificado.
+     */
+    @Override
+    public Page<Manga> filtrarPorAutor(String autor, Pageable pageable) {
+        return mangaRepository.findByAutorContainingIgnoreCase(autor, pageable);
+    }
+    
+    /**
+     * Filtra los mangas por título y autor.
+     * 
+     * @param titulo   El título del manga a filtrar.
+     * @param autor    El autor del manga a filtrar.
+     * @param pageable La información de paginación.
+     * @return Una página de mangas que contienen el título y autor especificados.
+     */
+    @Override
+    public Page<Manga> filtrarPorTituloYAutor(String titulo, String autor, Pageable pageable) {
+        return mangaRepository.findByTituloContainingIgnoreCaseAndAutorContainingIgnoreCase(titulo, autor, pageable);
+    }
+
 }

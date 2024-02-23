@@ -76,5 +76,34 @@ public interface MangasService {
      * @param reservaId El ID de la reserva del manga.
      */
     void devolverManga(Long reservaId);
+    
+    /**
+     * Filtra los mangas por autor.
+     * 
+     * @param autor    El autor del manga a filtrar.
+     * @param pageable La información de paginación.
+     * @return Una página de mangas que contienen el autor especificado.
+     */
+    Page<Manga> filtrarPorAutor(String autor, Pageable pageable);
+
+    /**
+     * Filtra los mangas por título.
+     * 
+     * @param titulo   El título del manga a filtrar.
+     * @param pageable La información de paginación.
+     * @return Una página de mangas que contienen el título especificado.
+     */
+    Page<Manga> filtrarPorTitulo(String titulo, Pageable pageable);
+    
+    /**
+     * Filtra los mangas por título y autor.
+     * 
+     * @param titulo   El título del manga a filtrar.
+     * @param autor    El autor del manga a filtrar.
+     * @param pageable La información de paginación.
+     * @return Una página de mangas que contienen el título y autor especificados.
+     */
+    Page<Manga> filtrarPorTituloYAutor(String titulo, String autor, Pageable pageable);
+
 
 }

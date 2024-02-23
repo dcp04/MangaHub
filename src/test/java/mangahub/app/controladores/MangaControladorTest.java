@@ -1,5 +1,4 @@
 package mangahub.app.controladores;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -31,9 +30,6 @@ import mangahub.app.error.exception.ExcepcionCampoVacio;
 import mangahub.app.service.MangasService;
 import mangahub.app.service.user.ReservaService;
 
-/**
- * Clase de prueba para el controlador de Manga.
- */
 @ExtendWith(MockitoExtension.class)
 public class MangaControladorTest {
 
@@ -51,35 +47,37 @@ public class MangaControladorTest {
      */
     @Test
     public void testListarTodosLosMangas() {
-    	List<Manga> listaMangas = new ArrayList<>();
-    	Manga manga1 = new Manga();
-    	manga1.setId(1L);
-    	manga1.setTitulo("Manga 1");
-    	manga1.setAutor("Autor 1");
-    	manga1.setIsbn("1234567890");
+        // Lista de mangas de ejemplo
+        List<Manga> listaMangas = new ArrayList<>();
+        Manga manga1 = new Manga();
+        manga1.setId(1L);
+        manga1.setTitulo("Manga 1");
+        manga1.setAutor("Autor 1");
+        manga1.setIsbn("1234567890");
 
-    	Manga manga2 = new Manga();
-    	manga2.setId(2L);
-    	manga2.setTitulo("Manga 2");
-    	manga2.setAutor("Autor 2");
-    	manga2.setIsbn("0987654321");
+        Manga manga2 = new Manga();
+        manga2.setId(2L);
+        manga2.setTitulo("Manga 2");
+        manga2.setAutor("Autor 2");
+        manga2.setIsbn("0987654321");
 
-    	listaMangas.add(manga1);
-    	listaMangas.add(manga2);
+        listaMangas.add(manga1);
+        listaMangas.add(manga2);
 
-    	Pageable pageable = Pageable.unpaged();
-
-    	Page<Manga> mangas = new PageImpl<>(listaMangas, pageable, listaMangas.size());
+        // Configuración de simulación para el servicio de mangas
+        Pageable pageable = Pageable.unpaged();
+        Page<Manga> mangas = new PageImpl<>(listaMangas, pageable, listaMangas.size());
         when(mangasService.listarTodosLosMangas(any())).thenReturn(mangas);
 
         // Llamando al método del controlador
-        ResponseEntity<Page<Manga>> response = mangaController.listarTodosLosMangas(0, 10);
+        ResponseEntity<Page<Manga>> response = mangaController.listarTodosLosMangas(null, null, 0, 10,null, null);
 
         // Verificando el resultado
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(mangas, response.getBody());
     }
 
+    
     /**
      * Prueba para verificar el método de obtener manga por ID.
      */
@@ -197,3 +195,4 @@ public class MangaControladorTest {
         // Verifica los detalles de la reserva en el body según lo que se espere
     }
 }
+
