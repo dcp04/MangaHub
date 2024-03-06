@@ -23,7 +23,7 @@ import mangahub.app.entities.Usuario;
  * Clase de prueba para el controlador de autorización.
  */
 @ExtendWith(MockitoExtension.class)
-public class AuthorizationControladorTest {
+class AuthorizationControladorTest {
 
     @InjectMocks
     private AuthorizationController authorizationController;
@@ -32,23 +32,10 @@ public class AuthorizationControladorTest {
     private Usuario usuario;
 
     /**
-     * Prueba para verificar el método sayHello del controlador.
-     */
-    @Test
-    public void testSayHello() {
-        // Llamando al método del controlador
-        ResponseEntity<String> response = authorizationController.sayHello();
-
-        // Verificando el resultado
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Here is your resource", response.getBody());
-    }
-
-    /**
      * Prueba para verificar el método miPerfil del controlador.
      */
     @Test
-    public void testMiPerfil() {
+    void testMiPerfil() {
         // Datos de ejemplo para el usuario
         String firstName = "John";
         String lastName = "Doe";

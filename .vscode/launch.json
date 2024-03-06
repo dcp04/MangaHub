@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-MangahubApplication<mangahub>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "mangahub.app.MangahubApplication",
+            "projectName": "mangahub",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

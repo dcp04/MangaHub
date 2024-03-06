@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import mangahub.app.dto.response.error.DetailsResponse;
 import mangahub.app.dto.response.error.ErrorDetailsResponse;
 import mangahub.app.entities.Manga;
@@ -106,18 +107,7 @@ public class MangaController {
 	 */
 	@PostMapping
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public Manga createManga(@RequestBody Manga manga) {
-		if (manga.getTitulo() == null || manga.getTitulo().isEmpty()) {
-			throw new ExcepcionCampoVacio("titulo", "El título no puede estar vacío");
-		}
-
-		if (manga.getAutor() == null || manga.getAutor().isEmpty()) {
-			throw new ExcepcionCampoVacio("autor", "El autor no puede estar vacío");
-		}
-
-		if (manga.getIsbn() == null || manga.getIsbn().isEmpty()) {
-			throw new ExcepcionCampoVacio("isbn", "El ISBN no puede estar vacío");
-		}
+	public Manga createManga(@Valid @RequestBody Manga manga) {
 		return mangasService.agregarManga(manga);
 	}
 

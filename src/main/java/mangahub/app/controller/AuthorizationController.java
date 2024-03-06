@@ -25,17 +25,6 @@ public class AuthorizationController {
     private static final Logger logger = LoggerFactory.getLogger(AuthorizationController.class);
 
     /**
-     * Método para obtener un recurso protegido.
-     * 
-     * @return Una respuesta HTTP con el mensaje de éxito.
-     */
-    @GetMapping
-    public ResponseEntity<String> sayHello() {
-        logger.info("## AuthorizationController :: sayHello");
-        return ResponseEntity.ok("Here is your resource");
-    }
-
-    /**
      * Método para obtener el perfil del usuario autenticado.
      * 
      * @param usuario El usuario autenticado.

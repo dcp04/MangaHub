@@ -5,6 +5,9 @@ import java.util.Date;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -24,6 +27,14 @@ public class GlobalExceptionHandler {
             WebRequest request) {
         ErrorDetailsResponse errorDetails = new ErrorDetailsResponse(new Date(), ex.getMessage(),
                 request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorDetailsResponse> handleIMethodArgumentNotValidException(MethodArgumentNotValidException ex){
+        BindingResult result = ex.getBindingResult();
+        FieldError fieldError = result.getFieldError();
+        ErrorDetailsResponse errorDetails = new ErrorDetailsResponse(new Date(), "Error en los campos", fieldError.getDefaultMessage());
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
